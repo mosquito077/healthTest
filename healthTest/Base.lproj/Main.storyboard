@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -52,33 +53,30 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1H-a9-eDg">
-                                <rect key="frame" x="138" y="40" width="100" height="30"/>
+                                <rect key="frame" x="138" y="40" width="187.5" height="30"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Egk-oX-yke"/>
-                                    <constraint firstAttribute="width" constant="100" id="R07-EY-iAI"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cg3-r1-gFO">
-                                <rect key="frame" x="138" y="90" width="100" height="30"/>
+                                <rect key="frame" x="138" y="90" width="187.5" height="30"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="KX2-I4-3U6"/>
-                                    <constraint firstAttribute="width" constant="100" id="YMb-Qy-DpL"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9mk-0Q-U7F">
-                                <rect key="frame" x="10" y="138" width="120" height="30"/>
+                                <rect key="frame" x="10" y="138" width="150" height="40"/>
                                 <color key="backgroundColor" red="0.22352941179999999" green="0.4549019608" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="qYC-xQ-F6h"/>
-                                    <constraint firstAttribute="height" constant="30" id="uGk-aC-1uz"/>
+                                    <constraint firstAttribute="height" constant="40" id="uGk-aC-1uz"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="插入步数">
@@ -88,6 +86,40 @@
                                     <action selector="insertStepCount:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2aO-Rr-5PV"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnh-py-rgR">
+                                <rect key="frame" x="10" y="196" width="150" height="40"/>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.4549019608" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="46n-aa-TWs"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="获取睡眠数据">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="checkSleepData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H6J-00-dOK"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="SleepAnalysis：" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="YF7-3M-Ned">
+                                <rect key="frame" x="0.0" y="244" width="375" height="423"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wnz-zD-w9N">
+                                <rect key="frame" x="190" y="196" width="150" height="40"/>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.4549019608" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="BBP-Yi-XKP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="修改睡眠数据">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="alterSleepData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iYT-NF-BXv"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -95,15 +127,29 @@
                             <constraint firstItem="aNb-qt-dJr" firstAttribute="top" secondItem="SoF-zO-TXm" secondAttribute="bottom" constant="20" id="1Pw-LR-Uls"/>
                             <constraint firstItem="SoF-zO-TXm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="3Zu-eq-h3v"/>
                             <constraint firstItem="Cg3-r1-gFO" firstAttribute="leading" secondItem="aNb-qt-dJr" secondAttribute="trailing" constant="8" id="3q0-Yn-ZOs"/>
+                            <constraint firstItem="Wnz-zD-w9N" firstAttribute="top" secondItem="cnh-py-rgR" secondAttribute="top" id="5Dj-u9-hZJ"/>
                             <constraint firstItem="aNb-qt-dJr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="5pc-zL-NWV"/>
+                            <constraint firstItem="cnh-py-rgR" firstAttribute="top" secondItem="9mk-0Q-U7F" secondAttribute="bottom" constant="18" id="9sp-9e-Aom"/>
+                            <constraint firstItem="Wnz-zD-w9N" firstAttribute="leading" secondItem="cnh-py-rgR" secondAttribute="trailing" constant="30" id="AqT-WR-hIE"/>
+                            <constraint firstItem="YF7-3M-Ned" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="DAv-NB-RQ4"/>
                             <constraint firstItem="C1H-a9-eDg" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="FrT-x4-CV8"/>
+                            <constraint firstItem="YF7-3M-Ned" firstAttribute="top" secondItem="cnh-py-rgR" secondAttribute="bottom" constant="8" id="Pld-aC-SIf"/>
+                            <constraint firstItem="YF7-3M-Ned" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="UhX-RE-jDP"/>
                             <constraint firstItem="9mk-0Q-U7F" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="VrE-s1-l9T"/>
+                            <constraint firstItem="C1H-a9-eDg" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="Wjo-1R-ojY"/>
                             <constraint firstItem="SoF-zO-TXm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="adn-mu-qTq"/>
+                            <constraint firstItem="Wnz-zD-w9N" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.4" id="aoG-I1-rAv"/>
+                            <constraint firstItem="cnh-py-rgR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="lUF-zG-rih"/>
+                            <constraint firstItem="Cg3-r1-gFO" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="nfQ-dH-MtH"/>
                             <constraint firstItem="C1H-a9-eDg" firstAttribute="leading" secondItem="SoF-zO-TXm" secondAttribute="trailing" constant="8" id="oAt-JI-0EX"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="YF7-3M-Ned" secondAttribute="bottom" id="qEo-qA-8hE"/>
+                            <constraint firstItem="9mk-0Q-U7F" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.4" id="qus-B7-ZkA"/>
+                            <constraint firstItem="cnh-py-rgR" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.4" id="rfb-WX-u60"/>
                             <constraint firstItem="9mk-0Q-U7F" firstAttribute="top" secondItem="aNb-qt-dJr" secondAttribute="bottom" constant="18" id="xyr-Ld-hir"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="sleepMessageTV" destination="YF7-3M-Ned" id="7fb-cA-vXh"/>
                         <outlet property="stepCountLabel" destination="C1H-a9-eDg" id="W3m-dC-hni"/>
                         <outlet property="stepMileLabel" destination="Cg3-r1-gFO" id="DXd-Zg-RRz"/>
                     </connections>

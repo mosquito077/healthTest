@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#define WeakSelf __weak typeof(self) weakSelf = self;
 
 typedef NS_ENUM(NSInteger, LHealthType) {
     LHealthTypeFootType = 0,
@@ -17,6 +18,8 @@ typedef NS_ENUM(NSInteger, LHealthType) {
 
 @property (weak, nonatomic) IBOutlet UILabel *stepCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *stepMileLabel;
+@property (weak, nonatomic) IBOutlet UITextView *sleepMessageTV;
+
 
 @property (strong, nonatomic) NSMutableArray *stepArray;
 @property (strong, nonatomic) NSMutableArray<HKObject *> *sampleArray;
@@ -46,27 +49,18 @@ typedef NS_ENUM(NSInteger, LHealthType) {
 #pragma mark - 获取健康权限
 - (void)isHealthDataAvailable{
     if ([HKHealthStore isHealthDataAvailable]) {
-        NSSet *writeDataTypes = [self dataTypesToWrite];
-        NSSet *readDataTypes = [self dataTypesToRead];
-        [self.healthStore requestAuthorizationToShareTypes:writeDataTypes readTypes:readDataTypes completion:^(BOOL success, NSError *error) {
+        
+        HKQuantityType *stepType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
+        HKObjectType *sleepType = [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
+        NSSet *dataTypes = [NSSet setWithObjects:stepType, sleepType, nil];
+        
+        [self.healthStore requestAuthorizationToShareTypes:dataTypes readTypes:dataTypes completion:^(BOOL success, NSError *error) {
             if (!success) {
                 NSLog(@"你不允许包来访问这些读/写数据类型。error === %@", error);
                 return;
             }
         }];
     }
-}
-
-#pragma mark - 设置写入权限
-- (NSSet *)dataTypesToWrite {
-    HKQuantityType *stepType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
-    return [NSSet setWithObjects:stepType, nil];
-}
-
-#pragma mark - 设置读取权限
-- (NSSet *)dataTypesToRead {
-    HKQuantityType *stepType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
-    return [NSSet setWithObjects:stepType, nil];
 }
 
 #pragma mark -- methods
@@ -82,6 +76,70 @@ typedef NS_ENUM(NSInteger, LHealthType) {
 
 - (IBAction)insertStepCount:(id)sender {
     [self addstepWithStepNum];
+}
+
+//读取睡眠信息  limit 只显示三个HKSample
+- (IBAction)checkSleepData:(id)sender {
+    WeakSelf;
+    HKSampleType *sampleType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierEndDate ascending:NO];
+    
+    HKSampleQuery *sleepSample = [[HKSampleQuery alloc]initWithSampleType:sampleType predicate:nil limit:3 sortDescriptors:@[sortDescriptor] resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
+        
+        /* 判断睡眠分析来源-用户手动添加&apple healthKit
+        NSMutableArray *resultArr = [[NSMutableArray alloc] init];
+        for (HKSample *model in results) {
+            NSDictionary *dict = (NSDictionary *)model.metadata;
+            NSInteger wasUserEntered = [dict[@"HKWasUserEntered"]integerValue];
+            if(wasUserEntered == 1) {      //user add
+                
+            } else {                       //apple healthkit
+                [resultArr addObject:model];
+            }
+        }*/
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        
+        for (HKCategorySample *sample in results) {
+            NSString *beginDateStr = [dateFormatter stringFromDate:sample.startDate];
+            NSString *endDateStr = [dateFormatter stringFromDate:sample.endDate];
+            NSLog(@"%ld %@ %@", (long)sample.value, beginDateStr, endDateStr);
+        }
+        NSLog(@"resultCount = %ld resultArr = %@",results.count, results);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.sleepMessageTV setText:[NSString stringWithFormat:@"%@", results]];
+        });
+    }];
+    [self.healthStore executeQuery:sleepSample];
+    
+}
+
+// 写入睡眠信息 插入一条数据
+- (IBAction)alterSleepData:(id)sender {
+    /*
+     value:
+     HKCategoryValueSleepAnalysisInBed = 0 卧床休息
+     HKCategoryValueSleepAnalysisAsleep = 1 睡眠时间
+     HKCategoryValueSleepAnalysisAwake = 2  清醒状态
+     */
+    WeakSelf;
+    HKCategoryType *mySleep = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
+    NSDate *startDate = [[NSDate date] dateByAddingTimeInterval:-2*60*60];
+    NSDate *endDate = [NSDate date];
+    HKCategorySample *sleep = [HKCategorySample categorySampleWithType:mySleep value:HKCategoryValueSleepAnalysisInBed startDate:startDate endDate:endDate];
+    
+    [self.healthStore saveObject:sleep withCompletion:^(BOOL success, NSError * _Nullable error) {
+        if (success) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.sleepMessageTV setText:[NSString stringWithFormat:@"插入类型%ld 开始时间%@ 结束时间%@", HKCategoryValueSleepAnalysisInBed, startDate, endDate]];
+            });
+            NSLog(@"alter sleepData success");
+        }
+        else {
+            NSLog(@"error === %@",error);
+        }
+    }];
 }
 
 - (void)addstepWithStepNum {
@@ -146,12 +204,13 @@ typedef NS_ENUM(NSInteger, LHealthType) {
         default:
             break;
     }
-    __weak typeof(self) weakSelf = self;
+    WeakSelf;
     NSSet *readType = [NSSet setWithObject:type];
     [self.healthStore requestAuthorizationToShareTypes:nil readTypes:readType completion:^(BOOL success, NSError * _Nullable error) {
         if (!success) {
             NSLog(@"没有获取授权");
         } else {
+            // beginDate & endDate 为nil，取全部数据
             NSDate *beginDate = nil;
             NSDate *endDate = nil;
             NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:beginDate endDate:endDate options:HKQueryOptionNone];
