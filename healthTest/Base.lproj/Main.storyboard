@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SoF-zO-TXm">
+                                <rect key="frame" x="10" y="40" width="120" height="30"/>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.4549019608" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="Mnv-i5-ccA"/>
+                                    <constraint firstAttribute="height" constant="30" id="WcH-DY-2ml"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="查看今日步数">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="stepCountButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kbS-oF-Vx2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNb-qt-dJr">
+                                <rect key="frame" x="10" y="90" width="120" height="30"/>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.4549019608" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="CC2-1g-oal"/>
+                                    <constraint firstAttribute="height" constant="30" id="Ub5-wS-cOn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="查看步行公里数">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="stepMileButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="W3f-At-JQP"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1H-a9-eDg">
+                                <rect key="frame" x="138" y="40" width="100" height="30"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Egk-oX-yke"/>
+                                    <constraint firstAttribute="width" constant="100" id="R07-EY-iAI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cg3-r1-gFO">
+                                <rect key="frame" x="138" y="90" width="100" height="30"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="KX2-I4-3U6"/>
+                                    <constraint firstAttribute="width" constant="100" id="YMb-Qy-DpL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9mk-0Q-U7F">
+                                <rect key="frame" x="10" y="138" width="120" height="30"/>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.4549019608" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="qYC-xQ-F6h"/>
+                                    <constraint firstAttribute="height" constant="30" id="uGk-aC-1uz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="插入步数">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="insertStepCount:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2aO-Rr-5PV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Cg3-r1-gFO" firstAttribute="top" secondItem="C1H-a9-eDg" secondAttribute="bottom" constant="20" id="0ms-Fy-p2D"/>
+                            <constraint firstItem="aNb-qt-dJr" firstAttribute="top" secondItem="SoF-zO-TXm" secondAttribute="bottom" constant="20" id="1Pw-LR-Uls"/>
+                            <constraint firstItem="SoF-zO-TXm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="3Zu-eq-h3v"/>
+                            <constraint firstItem="Cg3-r1-gFO" firstAttribute="leading" secondItem="aNb-qt-dJr" secondAttribute="trailing" constant="8" id="3q0-Yn-ZOs"/>
+                            <constraint firstItem="aNb-qt-dJr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="5pc-zL-NWV"/>
+                            <constraint firstItem="C1H-a9-eDg" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="FrT-x4-CV8"/>
+                            <constraint firstItem="9mk-0Q-U7F" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="VrE-s1-l9T"/>
+                            <constraint firstItem="SoF-zO-TXm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="adn-mu-qTq"/>
+                            <constraint firstItem="C1H-a9-eDg" firstAttribute="leading" secondItem="SoF-zO-TXm" secondAttribute="trailing" constant="8" id="oAt-JI-0EX"/>
+                            <constraint firstItem="9mk-0Q-U7F" firstAttribute="top" secondItem="aNb-qt-dJr" secondAttribute="bottom" constant="18" id="xyr-Ld-hir"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="stepCountLabel" destination="C1H-a9-eDg" id="W3m-dC-hni"/>
+                        <outlet property="stepMileLabel" destination="Cg3-r1-gFO" id="DXd-Zg-RRz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="116" y="123.68815592203899"/>
+        </scene>
+    </scenes>
+</document>
