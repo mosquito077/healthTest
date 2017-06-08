@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A271873F1EE6A48E0092CBC8 /* stepList.json in Resources */ = {isa = PBXBuildFile; fileRef = A271873E1EE6A48E0092CBC8 /* stepList.json */; };
+		A28CB63A1EE8EB8000EC7E4F /* sleepdata.json in Resources */ = {isa = PBXBuildFile; fileRef = A28CB6391EE8EB8000EC7E4F /* sleepdata.json */; };
 		A2AB52681EE136F70067A9EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AB52671EE136F70067A9EB /* main.m */; };
 		A2AB526B1EE136F70067A9EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AB526A1EE136F70067A9EB /* AppDelegate.m */; };
 		A2AB526E1EE136F70067A9EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AB526D1EE136F70067A9EB /* ViewController.m */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		A271873E1EE6A48E0092CBC8 /* stepList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stepList.json; sourceTree = "<group>"; };
+		A28CB6391EE8EB8000EC7E4F /* sleepdata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sleepdata.json; sourceTree = "<group>"; };
 		A2AB52631EE136F70067A9EB /* healthTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = healthTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AB52671EE136F70067A9EB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A2AB52691EE136F70067A9EB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		A2AB52651EE136F70067A9EB /* healthTest */ = {
 			isa = PBXGroup;
 			children = (
+				A28CB6391EE8EB8000EC7E4F /* sleepdata.json */,
 				A271873E1EE6A48E0092CBC8 /* stepList.json */,
 				A2AB52991EE13AD40067A9EB /* healthTest.entitlements */,
 				A2AB52691EE136F70067A9EB /* AppDelegate.h */,
@@ -272,6 +275,7 @@
 				A2AB52761EE136F70067A9EB /* LaunchScreen.storyboard in Resources */,
 				A271873F1EE6A48E0092CBC8 /* stepList.json in Resources */,
 				A2AB52731EE136F70067A9EB /* Assets.xcassets in Resources */,
+				A28CB63A1EE8EB8000EC7E4F /* sleepdata.json in Resources */,
 				A2AB52711EE136F70067A9EB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
