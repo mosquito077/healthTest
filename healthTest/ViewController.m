@@ -20,10 +20,10 @@ typedef NS_ENUM(NSInteger, LHealthType) {
 @property (weak, nonatomic) IBOutlet UILabel *stepMileLabel;
 @property (weak, nonatomic) IBOutlet UITextView *sleepMessageTV;
 
-
 @property (strong, nonatomic) NSMutableArray *stepArray;
+@property (strong, nonatomic) NSMutableArray *sleepArray;
 @property (strong, nonatomic) NSMutableArray<HKObject *> *sampleArray;
-
+@property (strong, nonatomic) NSMutableArray<HKObject *> *sleepSampleArray;
 @end
 
 @implementation ViewController
@@ -33,6 +33,7 @@ typedef NS_ENUM(NSInteger, LHealthType) {
     
     [self isHealthDataAvailable];
     [self initStepArray];
+    [self initSleepArray];
 
 }
 
@@ -43,6 +44,19 @@ typedef NS_ENUM(NSInteger, LHealthType) {
     NSDictionary *dictArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
     for (NSDictionary *dic in dictArray[@"data"]) {
         [_stepArray addObject:dic];
+    }
+}
+
+- (void)initSleepArray {
+    _sleepArray = [[NSMutableArray alloc]init];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"sleepdata.json" ofType:nil];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    NSDictionary *dictArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    for (NSDictionary *dic in dictArray[@"sleep"]) {
+        NSArray *dataArray = dic[@"levels"][@"data"];
+        for (NSDictionary *dataDic in dataArray) {
+            [_sleepArray addObject:dataDic];
+        }
     }
 }
 
@@ -117,29 +131,63 @@ typedef NS_ENUM(NSInteger, LHealthType) {
 
 // 写入睡眠信息 插入一条数据
 - (IBAction)alterSleepData:(id)sender {
+    
+    self.sleepSampleArray = [self sleepCorrelationWithSleepNum];
+    
+    [self.healthStore saveObjects:self.sleepSampleArray withCompletion:^(BOOL success, NSError * _Nullable error) {
+        if (success) {
+            NSLog(@"alter sleepData success");
+        } else {
+            NSLog(@"error === %@",error);
+        }
+    }];
+    
+//    [self.healthStore saveObject:sleep withCompletion:^(BOOL success, NSError * _Nullable error) {
+//        if (success) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [weakSelf.sleepMessageTV setText:[NSString stringWithFormat:@"插入类型%ld 开始时间%@ 结束时间%@", HKCategoryValueSleepAnalysisInBed, startDate, endDate]];
+//            });
+//            NSLog(@"alter sleepData success");
+//        } else {
+//            NSLog(@"error === %@",error);
+//        }
+//    }];
+}
+
+- (NSMutableArray<HKObject *> *)sleepCorrelationWithSleepNum {
+    
     /*
      value:
      HKCategoryValueSleepAnalysisInBed = 0 卧床休息
      HKCategoryValueSleepAnalysisAsleep = 1 睡眠时间
      HKCategoryValueSleepAnalysisAwake = 2  清醒状态
      */
-    WeakSelf;
     HKCategoryType *mySleep = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
-    NSDate *startDate = [[NSDate date] dateByAddingTimeInterval:-2*60*60];
-    NSDate *endDate = [NSDate date];
-    HKCategorySample *sleep = [HKCategorySample categorySampleWithType:mySleep value:HKCategoryValueSleepAnalysisInBed startDate:startDate endDate:endDate];
+    NSMutableArray<HKObject *> *countArray = [[NSMutableArray alloc] init];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     
-    [self.healthStore saveObject:sleep withCompletion:^(BOOL success, NSError * _Nullable error) {
-        if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.sleepMessageTV setText:[NSString stringWithFormat:@"插入类型%ld 开始时间%@ 结束时间%@", HKCategoryValueSleepAnalysisInBed, startDate, endDate]];
-            });
-            NSLog(@"alter sleepData success");
+    for (int i=0; i<[self.sleepArray count]; i++) {
+        NSString *timeString = [NSString stringWithFormat:@"%@", _sleepArray[i][@"dateTime"]];
+        NSString *startString = [timeString stringByReplacingOccurrencesOfString:@"T" withString:@" "];
+        NSString *dateString = [startString stringByReplacingOccurrencesOfString:@".000" withString:@""];
+        NSDate *startDate = [dateFormatter dateFromString:dateString];
+        double interval = [_sleepArray[i][@"seconds"] doubleValue];
+        NSDate *endDate = [startDate dateByAddingTimeInterval:interval];
+        NSString *level = _sleepArray[i][@"level"];
+        NSInteger value;
+        if ([level isEqualToString:@"awake"] || [level isEqualToString:@"wake"]) {
+            value = 2;
+        } else if ([level isEqualToString:@"restless"] || [level isEqualToString:@"rem"]) {
+            value = 0;
+        } else {
+            value = 1;
         }
-        else {
-            NSLog(@"error === %@",error);
-        }
-    }];
+        
+        HKCategorySample *sleep = [HKCategorySample categorySampleWithType:mySleep value:value startDate:startDate endDate:endDate];
+        [countArray addObject:sleep];
+    }
+    return countArray;
 }
 
 - (void)addstepWithStepNum {
