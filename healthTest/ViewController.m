@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "Tools.h"
+
 #define WeakSelf __weak typeof(self) weakSelf = self;
 
 typedef NS_ENUM(NSInteger, LHealthType) {
@@ -18,12 +20,12 @@ typedef NS_ENUM(NSInteger, LHealthType) {
 
 @property (weak, nonatomic) IBOutlet UILabel *stepCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *stepMileLabel;
-@property (weak, nonatomic) IBOutlet UITextView *sleepMessageTV;
 
 @property (strong, nonatomic) NSMutableArray *stepArray;
 @property (strong, nonatomic) NSMutableArray *sleepArray;
 @property (strong, nonatomic) NSMutableArray<HKObject *> *sampleArray;
 @property (strong, nonatomic) NSMutableArray<HKObject *> *sleepSampleArray;
+
 @end
 
 @implementation ViewController
@@ -61,16 +63,17 @@ typedef NS_ENUM(NSInteger, LHealthType) {
 }
 
 #pragma mark - 获取健康权限
-- (void)isHealthDataAvailable{
+- (void)isHealthDataAvailable {
     if ([HKHealthStore isHealthDataAvailable]) {
-        
         HKQuantityType *stepType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
+        HKQuantityType *mileType= [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceWalkingRunning];
         HKObjectType *sleepType = [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
-        NSSet *dataTypes = [NSSet setWithObjects:stepType, sleepType, nil];
+        NSSet *dataTypes = [NSSet setWithObjects:stepType, sleepType, mileType, nil];
         
         [self.healthStore requestAuthorizationToShareTypes:dataTypes readTypes:dataTypes completion:^(BOOL success, NSError *error) {
             if (!success) {
-                NSLog(@"你不允许包来访问这些读/写数据类型。error === %@", error);
+                NSString *message = [NSString stringWithFormat:@"你不允许包来访问这些读/写数据类型。error === %@", error];
+                [Tools showToastWithMessage:message];
                 return;
             }
         }];
@@ -82,87 +85,128 @@ typedef NS_ENUM(NSInteger, LHealthType) {
     [self getTodayHealthDataWithHealthType:LHealthTypeFootType];
 }
 
-
 - (IBAction)stepMileButtonTapped:(id)sender {
     [self getTodayHealthDataWithHealthType:LHealthTypeFootMile];
 }
 
-
 - (IBAction)insertStepCount:(id)sender {
-    [self addstepWithStepNum];
+    self.sampleArray = [self stepCorrelationWithStepNum];
+    [self.healthStore saveObjects:self.sampleArray withCompletion:^(BOOL success, NSError * _Nullable error) {
+        if (success) {
+            [Tools showToastWithMessage:@"添加成功"];
+        } else {
+            [Tools showToastWithMessage:[NSString stringWithFormat:@"The error was: %@.", error]];
+            return ;
+        }
+    }];
 }
 
 //读取睡眠信息  limit 只显示三个HKSample
 - (IBAction)checkSleepData:(id)sender {
-    WeakSelf;
     HKSampleType *sampleType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierEndDate ascending:NO];
-    
-    HKSampleQuery *sleepSample = [[HKSampleQuery alloc]initWithSampleType:sampleType predicate:nil limit:3 sortDescriptors:@[sortDescriptor] resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
         
-        /* 判断睡眠分析来源-用户手动添加&apple healthKit
-        NSMutableArray *resultArr = [[NSMutableArray alloc] init];
-        for (HKSample *model in results) {
-            NSDictionary *dict = (NSDictionary *)model.metadata;
-            NSInteger wasUserEntered = [dict[@"HKWasUserEntered"]integerValue];
-            if(wasUserEntered == 1) {      //user add
-                
-            } else {                       //apple healthkit
-                [resultArr addObject:model];
-            }
-        }*/
-        
+    HKSampleQuery *sleepSample = [[HKSampleQuery alloc]initWithSampleType:sampleType predicate:nil limit:8 sortDescriptors:@[sortDescriptor] resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
+            
+            /* 判断睡眠分析来源-用户手动添加&apple healthKit
+             NSMutableArray *resultArr = [[NSMutableArray alloc] init];
+             for (HKSample *model in results) {
+             NSDictionary *dict = (NSDictionary *)model.metadata;
+             NSInteger wasUserEntered = [dict[@"HKWasUserEntered"]integerValue];
+             if(wasUserEntered == 1) {      //user add
+             
+             } else {                       //apple healthkit
+             [resultArr addObject:model];
+             }
+             }*/
+            
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        
+            
         for (HKCategorySample *sample in results) {
             NSString *beginDateStr = [dateFormatter stringFromDate:sample.startDate];
             NSString *endDateStr = [dateFormatter stringFromDate:sample.endDate];
             NSLog(@"%ld %@ %@", (long)sample.value, beginDateStr, endDateStr);
         }
         NSLog(@"resultCount = %ld resultArr = %@",results.count, results);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.sleepMessageTV setText:[NSString stringWithFormat:@"%@", results]];
-        });
+            
+        [Tools showToastWithMessage:@"获取睡眠记录成功"];
     }];
     [self.healthStore executeQuery:sleepSample];
-    
 }
 
 // 写入睡眠信息 插入一条数据
 - (IBAction)alterSleepData:(id)sender {
+    HKCategoryType *categoryType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
+    HKDevice *device1 = [[HKDevice alloc] initWithName:@"ww" manufacturer:@"中国制造商" model:@"智能机" hardwareVersion:@"1.0.0" firmwareVersion:@"1.0.0" softwareVersion:@"1.0.0" localIdentifier:@"lizaochengwen" UDIDeviceIdentifier:@"wennengshebei"];
+    HKDevice *device2 = [[HKDevice alloc] initWithName:@"yy" manufacturer:@"中国制造商" model:@"智能机" hardwareVersion:@"1.0.0" firmwareVersion:@"1.0.0" softwareVersion:@"1.0.0" localIdentifier:@"lizaochengwen" UDIDeviceIdentifier:@"wennengshebei"];
     
-    self.sleepSampleArray = [self sleepCorrelationWithSleepNum];
+    NSMutableArray *list= [[NSMutableArray alloc] init];
+    for (float i = 1; i < 10; i++) {
+        HKCategorySample *testObject = [HKCategorySample categorySampleWithType:categoryType value:0 startDate:[NSDate dateWithTimeIntervalSinceNow:-(3600*i)] endDate:[NSDate dateWithTimeIntervalSinceNow:-(3600*(i-1))] device:device1 metadata:nil];
+        [list addObject:testObject];
+    }
     
-    [self.healthStore saveObjects:self.sleepSampleArray withCompletion:^(BOOL success, NSError * _Nullable error) {
+    for (float i = 1; i < 10; i++) {
+        HKCategorySample *testObject = [HKCategorySample categorySampleWithType:categoryType value:1 startDate:[NSDate dateWithTimeIntervalSinceNow:-(3600*i)] endDate:[NSDate dateWithTimeIntervalSinceNow:-(3600*(i-1))] device:device2 metadata:nil];
+        [list addObject:testObject];
+    }
+    
+    [_healthStore saveObjects:list withCompletion:^(BOOL success, NSError * _Nullable error) {
         if (success) {
-            NSLog(@"alter sleepData success");
+            [Tools showToastWithMessage:@"睡眠记录插入成功"];
         } else {
-            NSLog(@"error === %@",error);
+            [Tools showToastWithMessage:[NSString stringWithFormat:@"睡眠记录插入失败 %@", error]];
         }
     }];
+}
+
+//删除睡眠数据
+- (IBAction)deleteSleepDataAction:(id)sender {
+    /*  删除device全部数据
+    HKCategoryType *categoryType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
+    NSPredicate *catePredicate = [HKQuery predicateForObjectsWithDeviceProperty:HKDevicePropertyKeyName allowedValues:[[NSSet alloc] initWithObjects:@"文能", nil]];
+    [self.healthStore deleteObjectsOfType:categoryType predicate:catePredicate withCompletion:^(BOOL success, NSUInteger deletedObjectCount, NSError * _Nullable error) {
+        if (success) {
+            [Tools showToastWithMessage:@"睡眠记录删除成功"];
+        } else {
+            [Tools showToastWithMessage:[NSString stringWithFormat:@"睡眠记录删除失败 %@", error]];
+        }
+    }];
+     */
     
-//    [self.healthStore saveObject:sleep withCompletion:^(BOOL success, NSError * _Nullable error) {
-//        if (success) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [weakSelf.sleepMessageTV setText:[NSString stringWithFormat:@"插入类型%ld 开始时间%@ 结束时间%@", HKCategoryValueSleepAnalysisInBed, startDate, endDate]];
-//            });
-//            NSLog(@"alter sleepData success");
-//        } else {
-//            NSLog(@"error === %@",error);
-//        }
-//    }];
+    HKSampleType *sampleType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierEndDate ascending:NO];
+    
+    HKSampleQuery *sleepSample = [[HKSampleQuery alloc]initWithSampleType:sampleType predicate:nil limit:HKObjectQueryNoLimit sortDescriptors:@[sortDescriptor] resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString *startString = @"2017-06-10 14:00:00";
+        NSString *endString = @"2017-06-10 18:00:00";
+        NSDate *startDate = [dateFormatter dateFromString:startString];
+        NSDate *endDate = [dateFormatter dateFromString:endString];
+
+        for (HKSample *sample in results) {
+            if ([sample.startDate compare:startDate] == NSOrderedDescending
+                && [sample.endDate compare:endDate] == NSOrderedAscending
+                && [sample.device.name isEqualToString: @"ww"]) {
+                [self.healthStore deleteObject:sample withCompletion:^(BOOL success, NSError * _Nullable error) {
+                    if (success) {
+                        NSLog(@"success");
+                    } else {
+                        NSLog(@"%@", error);
+                        NSLog(@"error");
+                    }
+                }];
+            }
+        }
+    }];
+    [self.healthStore executeQuery:sleepSample];
 }
 
 - (NSMutableArray<HKObject *> *)sleepCorrelationWithSleepNum {
-    
-    /*
-     value:
-     HKCategoryValueSleepAnalysisInBed = 0 卧床休息
-     HKCategoryValueSleepAnalysisAsleep = 1 睡眠时间
-     HKCategoryValueSleepAnalysisAwake = 2  清醒状态
-     */
-    HKCategoryType *mySleep = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
+    HKCategoryType *categoryType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
     NSMutableArray<HKObject *> *countArray = [[NSMutableArray alloc] init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -184,28 +228,13 @@ typedef NS_ENUM(NSInteger, LHealthType) {
             value = 1;
         }
         
-        HKCategorySample *sleep = [HKCategorySample categorySampleWithType:mySleep value:value startDate:startDate endDate:endDate];
-        [countArray addObject:sleep];
+        HKCategorySample *sleepSample = [HKCategorySample categorySampleWithType:categoryType value:value startDate:startDate endDate:endDate];
+        [countArray addObject:sleepSample];
     }
     return countArray;
 }
 
-- (void)addstepWithStepNum {
-    
-    self.sampleArray = [self stepCorrelationWithStepNum];
-    [self.healthStore saveObjects:self.sampleArray withCompletion:^(BOOL success, NSError * _Nullable error) {
-        if (success) {
-            NSLog(@"添加成功");
-        } else {
-            NSLog(@"The error was: %@.", error);
-            return ;
-        }
-    }];
-    
-}
-
 - (NSMutableArray<HKObject *> *)stepCorrelationWithStepNum {
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSMutableArray<HKObject *> *countArray = [[NSMutableArray alloc] init];
@@ -253,38 +282,29 @@ typedef NS_ENUM(NSInteger, LHealthType) {
             break;
     }
     WeakSelf;
-    NSSet *readType = [NSSet setWithObject:type];
-    [self.healthStore requestAuthorizationToShareTypes:nil readTypes:readType completion:^(BOOL success, NSError * _Nullable error) {
-        if (!success) {
-            NSLog(@"没有获取授权");
-        } else {
-            // beginDate & endDate 为nil，取全部数据
-            NSDate *beginDate = nil;
-            NSDate *endDate = nil;
-            NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:beginDate endDate:endDate options:HKQueryOptionNone];
-            HKStatisticsQuery *query = [[HKStatisticsQuery alloc]initWithQuantityType:type quantitySamplePredicate:predicate options:HKStatisticsOptionCumulativeSum completionHandler:^(HKStatisticsQuery * _Nonnull query,HKStatistics * _Nullable result,NSError * _Nullable error) {
-                if (result) {
-                    HKUnit *unit = [HKUnit countUnit];
-                    if (healthType == LHealthTypeFootType) {
-                        unit = [HKUnit countUnit];
-                    } else {
-                        unit = [HKUnit mileUnit];
-                        }
-                    healthData = [result.sumQuantity doubleValueForUnit:unit];
-                    }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (healthType == LHealthTypeFootType) {
-                        [weakSelf showStepCount:healthData];
-                        } else {
-                            [weakSelf showStepMile:healthData];
-                        }
-                    });
-            }];
-            [self.healthStore executeQuery:query];
+    NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:[NSDate dateWithTimeIntervalSinceNow:-(24 * 60 * 60)] endDate:[NSDate date] options:HKQueryOptionNone];
+    HKStatisticsQuery *query = [[HKStatisticsQuery alloc]initWithQuantityType:type quantitySamplePredicate:predicate options:HKStatisticsOptionCumulativeSum completionHandler:^(HKStatisticsQuery * _Nonnull query,HKStatistics * _Nullable result,NSError * _Nullable error) {
+         if (result) {
+             HKUnit *unit = [HKUnit countUnit];
+             if (healthType == LHealthTypeFootType) {
+                 unit = [HKUnit countUnit];
+             } else {
+                 unit = [HKUnit mileUnit];
+                }
+            healthData = [result.sumQuantity doubleValueForUnit:unit];
         }
+        
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (healthType == LHealthTypeFootType) {
+            [weakSelf showStepCount:healthData];
+        } else {
+            [weakSelf showStepMile:healthData];
+        }
+    });
     }];
+    
+    [self.healthStore executeQuery:query];
 }
-
 
 - (void)showStepCount:(double)healthData {
     NSString *stepCountStr = [NSString stringWithFormat:@"%f", healthData];
@@ -308,4 +328,5 @@ typedef NS_ENUM(NSInteger, LHealthType) {
     }
     return _healthStore;
 }
+
 @end
