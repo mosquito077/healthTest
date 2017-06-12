@@ -101,6 +101,39 @@ typedef NS_ENUM(NSInteger, LHealthType) {
     }];
 }
 
+- (IBAction)deleteStepCount:(id)sender {
+    HKQuantityType *stepConsumedTyep = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
+    NSPredicate *queryPredicate = [HKSampleQuery predicateForSamplesWithStartDate:[[NSDate date] dateByAddingTimeInterval:-(24*60*60)] endDate:[NSDate date] options:HKQueryOptionNone];
+    
+    HKSampleQuery *query = [[HKSampleQuery alloc] initWithSampleType:stepConsumedTyep predicate:queryPredicate limit:1000 sortDescriptors:nil resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"查找Sample错误：%@", error.description);
+        } else {
+            
+            if (results) {
+                for (HKSample *deleteSample in results) {
+                    if (deleteSample) {
+                        NSString *sourceValue = [deleteSample.metadata objectForKey:@"metaKey"];
+                        NSLog(@"Source = %@", sourceValue);
+                        if (sourceValue != nil && [sourceValue isEqualToString:@"metaKey"]) {
+                            [self.healthStore deleteObject:deleteSample withCompletion:^(BOOL success, NSError * _Nullable error) {
+                                if (success) {
+                                    NSLog(@"成功删除对象");
+                                } else {
+                                    NSLog(@"删除对象失败");
+                                }
+                            }];
+                        } else {
+                            NSLog(@"并非ss数据不做删除");
+                        }
+                    }
+                }
+            }
+        }
+    }];
+    [self.healthStore executeQuery:query];
+}
+
 //读取睡眠信息  limit 只显示三个HKSample
 - (IBAction)checkSleepData:(id)sender {
     HKSampleType *sampleType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];

@@ -1,19 +1,19 @@
 {
   "data" : [
     {
-      "dateTime" : "2017-05-02",
-      "value" : 1112
+      "dateTime" : "2017-06-10",
+      "value" : 12
     },
     {
-      "dateTime" : "2017-06-03",
-      "value" : 1165
+      "dateTime" : "2017-06-11",
+      "value" : 65
     },
     {
-      "dateTime" : "2017-06-07",
+      "dateTime" : "2017-06-12",
       "value" : 53
     },
     {
-      "dateTime" : "2017-06-05",
+      "dateTime" : "2017-06-09",
       "value" : 70
     }
   ]
