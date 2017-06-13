@@ -175,12 +175,12 @@ typedef NS_ENUM(NSInteger, LHealthType) {
     HKDevice *device2 = [[HKDevice alloc] initWithName:@"yy" manufacturer:@"中国制造商" model:@"智能机" hardwareVersion:@"1.0.0" firmwareVersion:@"1.0.0" softwareVersion:@"1.0.0" localIdentifier:@"lizaochengwen" UDIDeviceIdentifier:@"wennengshebei"];
     
     NSMutableArray *list= [[NSMutableArray alloc] init];
-    for (float i = 1; i < 10; i++) {
+    for (float i = 1; i < 6; i++) {
         HKCategorySample *testObject = [HKCategorySample categorySampleWithType:categoryType value:0 startDate:[NSDate dateWithTimeIntervalSinceNow:-(3600*i)] endDate:[NSDate dateWithTimeIntervalSinceNow:-(3600*(i-1))] device:device1 metadata:nil];
         [list addObject:testObject];
     }
     
-    for (float i = 1; i < 10; i++) {
+    for (float i = 1; i < 5; i++) {
         HKCategorySample *testObject = [HKCategorySample categorySampleWithType:categoryType value:1 startDate:[NSDate dateWithTimeIntervalSinceNow:-(3600*i)] endDate:[NSDate dateWithTimeIntervalSinceNow:-(3600*(i-1))] device:device2 metadata:nil];
         [list addObject:testObject];
     }
@@ -196,44 +196,25 @@ typedef NS_ENUM(NSInteger, LHealthType) {
 
 //删除睡眠数据
 - (IBAction)deleteSleepDataAction:(id)sender {
-    /*  删除device全部数据
-    HKCategoryType *categoryType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
-    NSPredicate *catePredicate = [HKQuery predicateForObjectsWithDeviceProperty:HKDevicePropertyKeyName allowedValues:[[NSSet alloc] initWithObjects:@"文能", nil]];
-    [self.healthStore deleteObjectsOfType:categoryType predicate:catePredicate withCompletion:^(BOOL success, NSUInteger deletedObjectCount, NSError * _Nullable error) {
-        if (success) {
-            [Tools showToastWithMessage:@"睡眠记录删除成功"];
-        } else {
-            [Tools showToastWithMessage:[NSString stringWithFormat:@"睡眠记录删除失败 %@", error]];
-        }
-    }];
-     */
     
     HKSampleType *sampleType = [HKCategoryType categoryTypeForIdentifier:HKCategoryTypeIdentifierSleepAnalysis];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierEndDate ascending:NO];
-    
-    HKSampleQuery *sleepSample = [[HKSampleQuery alloc]initWithSampleType:sampleType predicate:nil limit:HKObjectQueryNoLimit sortDescriptors:@[sortDescriptor] resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        NSString *startString = @"2017-06-10 14:00:00";
-        NSString *endString = @"2017-06-10 18:00:00";
-        NSDate *startDate = [dateFormatter dateFromString:startString];
-        NSDate *endDate = [dateFormatter dateFromString:endString];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierStartDate ascending:NO];
 
-        for (HKSample *sample in results) {
-            if ([sample.startDate compare:startDate] == NSOrderedDescending
-                && [sample.endDate compare:endDate] == NSOrderedAscending
-                && [sample.device.name isEqualToString: @"ww"]) {
-                [self.healthStore deleteObject:sample withCompletion:^(BOOL success, NSError * _Nullable error) {
-                    if (success) {
-                        NSLog(@"success");
-                    } else {
-                        NSLog(@"%@", error);
-                        NSLog(@"error");
-                    }
-                }];
-            }
-        }
+    NSPredicate *datePredicate = [HKSampleQuery predicateForSamplesWithStartDate:[[NSDate date] dateByAddingTimeInterval:-(2*60*60)] endDate:[NSDate date] options:HKQueryOptionNone];
+    NSPredicate *devicePredicate = [HKQuery predicateForObjectsWithDeviceProperty:HKDevicePropertyKeyName allowedValues:[[NSSet alloc] initWithObjects:@"ww", nil]];
+    NSPredicate *queryPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:datePredicate, devicePredicate,nil]];
+    
+    HKSampleQuery *sleepSample = [[HKSampleQuery alloc]initWithSampleType:sampleType predicate:queryPredicate limit:HKObjectQueryNoLimit sortDescriptors:@[sortDescriptor] resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
+
+            [self.healthStore deleteObjects:results withCompletion:^(BOOL success, NSError * _Nullable error) {
+                if (success) {
+                    NSLog(@"success");
+                } else {
+                    NSLog(@"%@", error);
+                    NSLog(@"error");
+                }
+            }];
+        
     }];
     [self.healthStore executeQuery:sleepSample];
 }
