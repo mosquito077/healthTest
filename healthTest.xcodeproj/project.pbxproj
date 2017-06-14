@@ -12,6 +12,8 @@
 		A2561BF61EEBCF2B009F80AE /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = A2561BF51EEBCF2B009F80AE /* Tools.m */; };
 		A296221C1EEBD61A00A2D7EB /* sleepdata.json in Resources */ = {isa = PBXBuildFile; fileRef = A296221A1EEBD61A00A2D7EB /* sleepdata.json */; };
 		A296221D1EEBD61A00A2D7EB /* stepList.json in Resources */ = {isa = PBXBuildFile; fileRef = A296221B1EEBD61A00A2D7EB /* stepList.json */; };
+		A296B6061EF1141C000C2F7B /* HealthKitManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A296B6051EF1141C000C2F7B /* HealthKitManager.m */; };
+		A296B60F1EF13BA3000C2F7B /* AnalyzeJson.m in Sources */ = {isa = PBXBuildFile; fileRef = A296B60E1EF13BA3000C2F7B /* AnalyzeJson.m */; };
 		A2AB52681EE136F70067A9EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AB52671EE136F70067A9EB /* main.m */; };
 		A2AB526B1EE136F70067A9EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AB526A1EE136F70067A9EB /* AppDelegate.m */; };
 		A2AB526E1EE136F70067A9EB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AB526D1EE136F70067A9EB /* ViewController.m */; };
@@ -52,6 +54,10 @@
 		A2561BF51EEBCF2B009F80AE /* Tools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		A296221A1EEBD61A00A2D7EB /* sleepdata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sleepdata.json; sourceTree = "<group>"; };
 		A296221B1EEBD61A00A2D7EB /* stepList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stepList.json; sourceTree = "<group>"; };
+		A296B6041EF1141C000C2F7B /* HealthKitManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthKitManager.h; sourceTree = "<group>"; };
+		A296B6051EF1141C000C2F7B /* HealthKitManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthKitManager.m; sourceTree = "<group>"; };
+		A296B60D1EF13BA3000C2F7B /* AnalyzeJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeJson.h; sourceTree = "<group>"; };
+		A296B60E1EF13BA3000C2F7B /* AnalyzeJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeJson.m; sourceTree = "<group>"; };
 		A2AB52631EE136F70067A9EB /* healthTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = healthTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AB52671EE136F70067A9EB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A2AB52691EE136F70067A9EB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -122,6 +128,8 @@
 			children = (
 				A2561BF41EEBCF2B009F80AE /* Tools.h */,
 				A2561BF51EEBCF2B009F80AE /* Tools.m */,
+				A296B60D1EF13BA3000C2F7B /* AnalyzeJson.h */,
+				A296B60E1EF13BA3000C2F7B /* AnalyzeJson.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -165,6 +173,8 @@
 				A2AB52991EE13AD40067A9EB /* healthTest.entitlements */,
 				A2AB52691EE136F70067A9EB /* AppDelegate.h */,
 				A2AB526A1EE136F70067A9EB /* AppDelegate.m */,
+				A296B6041EF1141C000C2F7B /* HealthKitManager.h */,
+				A296B6051EF1141C000C2F7B /* HealthKitManager.m */,
 				A2AB526C1EE136F70067A9EB /* ViewController.h */,
 				A2AB526D1EE136F70067A9EB /* ViewController.m */,
 				A2AB526F1EE136F70067A9EB /* Main.storyboard */,
@@ -501,7 +511,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A296B6061EF1141C000C2F7B /* HealthKitManager.m in Sources */,
 				A2AB526E1EE136F70067A9EB /* ViewController.m in Sources */,
+				A296B60F1EF13BA3000C2F7B /* AnalyzeJson.m in Sources */,
 				A2AB526B1EE136F70067A9EB /* AppDelegate.m in Sources */,
 				A2AB52681EE136F70067A9EB /* main.m in Sources */,
 				A2561BF61EEBCF2B009F80AE /* Tools.m in Sources */,

@@ -128,51 +128,46 @@
                                     <action selector="deleteSleepDataAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Lb4-Q4-VQM"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E5O-2Z-wdw">
-                                <rect key="frame" x="179" y="138" width="150" height="40"/>
-                                <color key="backgroundColor" red="0.22352941179999999" green="0.4549019608" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="Pbh-d7-EkC"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B6S-JX-ycz">
+                                <rect key="frame" x="189" y="203" width="150" height="40"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="删除步数">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="deleteStepCount:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MfK-6X-3Tq"/>
-                                </connections>
-                            </button>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Cg3-r1-gFO" firstAttribute="top" secondItem="C1H-a9-eDg" secondAttribute="bottom" constant="20" id="0ms-Fy-p2D"/>
                             <constraint firstItem="aNb-qt-dJr" firstAttribute="top" secondItem="SoF-zO-TXm" secondAttribute="bottom" constant="20" id="1Pw-LR-Uls"/>
+                            <constraint firstItem="B6S-JX-ycz" firstAttribute="bottom" secondItem="cnh-py-rgR" secondAttribute="bottom" id="3Nw-v6-XIb"/>
                             <constraint firstItem="SoF-zO-TXm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="3Zu-eq-h3v"/>
                             <constraint firstItem="Cg3-r1-gFO" firstAttribute="leading" secondItem="aNb-qt-dJr" secondAttribute="trailing" constant="8" id="3q0-Yn-ZOs"/>
                             <constraint firstItem="aNb-qt-dJr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="5pc-zL-NWV"/>
-                            <constraint firstItem="E5O-2Z-wdw" firstAttribute="leading" secondItem="9mk-0Q-U7F" secondAttribute="trailing" constant="19" id="75d-uy-PzM"/>
                             <constraint firstItem="cnh-py-rgR" firstAttribute="top" secondItem="9mk-0Q-U7F" secondAttribute="bottom" constant="25" id="9sp-9e-Aom"/>
                             <constraint firstItem="Shs-RR-Ihd" firstAttribute="top" secondItem="Wnz-zD-w9N" secondAttribute="bottom" constant="25" id="EBP-ss-e6l"/>
                             <constraint firstItem="C1H-a9-eDg" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="FrT-x4-CV8"/>
                             <constraint firstItem="9mk-0Q-U7F" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="VrE-s1-l9T"/>
                             <constraint firstItem="Shs-RR-Ihd" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="WBt-95-afT"/>
                             <constraint firstItem="C1H-a9-eDg" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="Wjo-1R-ojY"/>
-                            <constraint firstItem="E5O-2Z-wdw" firstAttribute="top" secondItem="Cg3-r1-gFO" secondAttribute="bottom" constant="18" id="Wwd-Be-CN4"/>
                             <constraint firstItem="Wnz-zD-w9N" firstAttribute="top" secondItem="cnh-py-rgR" secondAttribute="bottom" constant="25" id="YB3-04-aSQ"/>
                             <constraint firstItem="SoF-zO-TXm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="adn-mu-qTq"/>
                             <constraint firstItem="Wnz-zD-w9N" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.45" id="aoG-I1-rAv"/>
-                            <constraint firstItem="E5O-2Z-wdw" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.4" id="cF4-Bn-ApM"/>
                             <constraint firstItem="Wnz-zD-w9N" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="gU4-Bg-3JW"/>
+                            <constraint firstItem="B6S-JX-ycz" firstAttribute="top" secondItem="cnh-py-rgR" secondAttribute="top" id="lHx-nd-5nB"/>
                             <constraint firstItem="cnh-py-rgR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="lUF-zG-rih"/>
                             <constraint firstItem="Cg3-r1-gFO" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="nfQ-dH-MtH"/>
+                            <constraint firstItem="B6S-JX-ycz" firstAttribute="leading" secondItem="cnh-py-rgR" secondAttribute="trailing" constant="10" id="nif-K7-H27"/>
                             <constraint firstItem="C1H-a9-eDg" firstAttribute="leading" secondItem="SoF-zO-TXm" secondAttribute="trailing" constant="8" id="oAt-JI-0EX"/>
                             <constraint firstItem="9mk-0Q-U7F" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.4" id="qus-B7-ZkA"/>
                             <constraint firstItem="cnh-py-rgR" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.45" id="rfb-WX-u60"/>
+                            <constraint firstItem="B6S-JX-ycz" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.4" id="wDb-Hd-ymm"/>
                             <constraint firstItem="9mk-0Q-U7F" firstAttribute="top" secondItem="aNb-qt-dJr" secondAttribute="bottom" constant="18" id="xyr-Ld-hir"/>
                             <constraint firstItem="Shs-RR-Ihd" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.45" id="yBI-zz-6uS"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="sleepLabel" destination="B6S-JX-ycz" id="uXE-H7-CsA"/>
                         <outlet property="stepCountLabel" destination="C1H-a9-eDg" id="W3m-dC-hni"/>
                         <outlet property="stepMileLabel" destination="Cg3-r1-gFO" id="DXd-Zg-RRz"/>
                     </connections>
