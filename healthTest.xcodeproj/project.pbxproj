@@ -20,8 +20,6 @@
 		A2AB52711EE136F70067A9EB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2AB526F1EE136F70067A9EB /* Main.storyboard */; };
 		A2AB52731EE136F70067A9EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2AB52721EE136F70067A9EB /* Assets.xcassets */; };
 		A2AB52761EE136F70067A9EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2AB52741EE136F70067A9EB /* LaunchScreen.storyboard */; };
-		A2AB52811EE136F70067A9EB /* healthTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AB52801EE136F70067A9EB /* healthTestTests.m */; };
-		A2AB528C1EE136F70067A9EB /* healthTestUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A2AB528B1EE136F70067A9EB /* healthTestUITests.m */; };
 		A2AB529C1EE13AD50067A9EB /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2AB529B1EE13AD50067A9EB /* HealthKit.framework */; };
 		CABFDA42302BECE9F1ABC39B /* libPods-healthTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D37883D509399574C4B6F0B /* libPods-healthTest.a */; };
 /* End PBXBuildFile section */
@@ -69,11 +67,7 @@
 		A2AB52751EE136F70067A9EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A2AB52771EE136F70067A9EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2AB527C1EE136F70067A9EB /* healthTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = healthTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A2AB52801EE136F70067A9EB /* healthTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = healthTestTests.m; sourceTree = "<group>"; };
-		A2AB52821EE136F70067A9EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2AB52871EE136F70067A9EB /* healthTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = healthTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A2AB528B1EE136F70067A9EB /* healthTestUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = healthTestUITests.m; sourceTree = "<group>"; };
-		A2AB528D1EE136F70067A9EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2AB52991EE13AD40067A9EB /* healthTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = healthTest.entitlements; sourceTree = "<group>"; };
 		A2AB529B1EE13AD50067A9EB /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		B21B7520BCAEB3339A04537E /* Pods-healthTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-healthTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-healthTest/Pods-healthTest.release.xcconfig"; sourceTree = "<group>"; };
@@ -147,8 +141,6 @@
 			isa = PBXGroup;
 			children = (
 				A2AB52651EE136F70067A9EB /* healthTest */,
-				A2AB527F1EE136F70067A9EB /* healthTestTests */,
-				A2AB528A1EE136F70067A9EB /* healthTestUITests */,
 				A2AB52641EE136F70067A9EB /* Products */,
 				A2AB529A1EE13AD50067A9EB /* Frameworks */,
 				76AB076F84A161B1EC6561A4 /* Pods */,
@@ -192,24 +184,6 @@
 				A2AB52671EE136F70067A9EB /* main.m */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		A2AB527F1EE136F70067A9EB /* healthTestTests */ = {
-			isa = PBXGroup;
-			children = (
-				A2AB52801EE136F70067A9EB /* healthTestTests.m */,
-				A2AB52821EE136F70067A9EB /* Info.plist */,
-			);
-			path = healthTestTests;
-			sourceTree = "<group>";
-		};
-		A2AB528A1EE136F70067A9EB /* healthTestUITests */ = {
-			isa = PBXGroup;
-			children = (
-				A2AB528B1EE136F70067A9EB /* healthTestUITests.m */,
-				A2AB528D1EE136F70067A9EB /* Info.plist */,
-			);
-			path = healthTestUITests;
 			sourceTree = "<group>";
 		};
 		A2AB529A1EE13AD50067A9EB /* Frameworks */ = {
@@ -524,7 +498,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2AB52811EE136F70067A9EB /* healthTestTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,7 +505,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2AB528C1EE136F70067A9EB /* healthTestUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
